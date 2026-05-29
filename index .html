@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Góc Nhỏ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET CSS ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Roboto', sans-serif; color: #333; }
+
+    /* ===== PHẦN 1: HEADER ===== */
+    header {
+      background: linear-gradient(135deg, #1a0a00, #3b2a1a);
+      padding: 18px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .logo {
+      color: #f5c97a;
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: #f5c97a; }
+
+    /* ===== PHẦN 2: BANNER ===== */
+    .banner {
+      height: 600px;
+      position: relative;
+      background: #2a1500;
+      overflow: hidden;
+    }
+    .banner-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1600');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.55;
+    }
+    /* Fallback nếu ảnh không load */
+    .banner-bg-fallback {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #5a3010 0%, #2a1500 70%);
+    }
+    .banner-overlay {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+    .banner-tag {
+      background: rgba(245,201,122,0.15);
+      border: 1px solid #f5c97a;
+      color: #f5c97a;
+      padding: 6px 20px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border-radius: 30px;
+      margin-bottom: 20px;
+    }
+    .banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 68px;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .banner p {
+      color: #f0ddb8;
+      font-size: 18px;
+      margin-bottom: 35px;
+      letter-spacing: 1px;
+    }
+    .banner-btns { display: flex; gap: 15px; }
+    .btn-primary {
+      background: #f5c97a;
+      color: #2a1500;
+      border: none;
+      padding: 14px 36px;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: #e0b55f; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 14px 36px;
+      font-size: 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .btn-outline:hover { border-color: #f5c97a; color: #f5c97a; transform: translateY(-2px); }
+
+    /* ===== THANH THỐNG KÊ ===== */
+    .stats-bar {
+      background: #2a1500;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      padding: 28px 40px;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: #f5c97a;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ===== PHẦN 3: SẢN PHẨM ===== */
+    .san-pham {
+      padding: 80px 60px;
+      background: #fdf6ec;
+      text-align: center;
+    }
+    .section-sub {
+      color: #c08040;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .san-pham h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      color: #2a1500;
+      margin-bottom: 8px;
+    }
+    .section-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, #f5c97a, #c08040);
+      margin: 16px auto 50px;
+      border-radius: 2px;
+    }
+
+    /* 4 ô chia cột ngang - FIX LAYOUT */
+    .danh-sach-san-pham {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .the-san-pham {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(60,30,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .the-san-pham:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(60,30,0,0.18);
+    }
+    .the-san-pham .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #c0392b;
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      z-index: 1;
+    }
+
+    /* Dùng div thay img để tránh lỗi ảnh vỡ */
+    .card-img {
+      width: 100%;
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.4s;
+      flex-shrink: 0;
+    }
+    .the-san-pham:hover .card-img { transform: scale(1.05); }
+
+    .the-san-pham .info {
+      padding: 18px;
+      text-align: left;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .the-san-pham h3 {
+      font-size: 16px;
+      color: #2a1500;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .the-san-pham p {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 14px;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .gia {
+      color: #c0392b;
+      font-weight: 500;
+      font-size: 17px;
+      font-family: 'Playfair Display', serif;
+    }
+    .btn-them {
+      background: #3b2a1a;
+      color: #f5c97a;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+    .btn-them:hover { background: #5a3e28; }
+
+    /* ===== PHẦN 4: FOOTER ===== */
+    footer {
+      background: linear-gradient(135deg, #1a0a00, #2e1a0a);
+      color: #ccc;
+      padding: 50px 60px 30px;
+    }
+    .footer-grid {
+      display: flex;
+      gap: 60px;
+      margin-bottom: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer-col h4 {
+      font-family: 'Playfair Display', serif;
+      color: #f5c97a;
+      font-size: 20px;
+      margin-bottom: 18px;
+    }
+    .footer-col p { font-size: 14px; line-height: 2; color: #bbb; }
+    .footer-col a { color: #bbb; text-decoration: none; }
+    .footer-col a:hover { color: #f5c97a; }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 20px;
+    }
+    .ban-quyen { text-align: center; font-size: 12px; color: #555; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== PHẦN 1: HEADER ===== -->
+  <header>
+    <div class="logo">☕ Cafe Góc Nhỏ</div>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#">Menu</a>
+      <a href="#">Về chúng tôi</a>
+      <a href="#">Liên hệ</a>
+    </nav>
+  </header>
+
+  <!-- ===== PHẦN 2: BANNER ===== -->
+  <section class="banner">
+    <div class="banner-bg-fallback"></div>
+    <div class="banner-bg"></div>
+    <div class="banner-overlay">
+      <div class="banner-tag">Mở cửa từ 7:00 – 22:00</div>
+      <h1>Cafe<br>Góc Nhỏ</h1>
+      <p>Nơi bắt đầu một ngày hoàn hảo của bạn</p>
+      <div class="banner-btns">
+        <button class="btn-primary">Xem Menu</button>
+        <button class="btn-outline">Đặt Bàn</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THANH THỐNG KÊ ===== -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Năm hoạt động</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Loại thức uống</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10K+</div>
+      <div class="stat-label">Khách hàng</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.9★</div>
+      <div class="stat-label">Đánh giá</div>
+    </div>
+  </div>
+
+  <!-- ===== PHẦN 3: SẢN PHẨM / DỊCH VỤ ===== -->
+  <section class="san-pham">
+    <p class="section-sub">Thực đơn nổi bật</p>
+    <h2>Thức Uống Của Chúng Tôi</h2>
+    <div class="section-line"></div>
+
+    <!-- 4 ô chia cột ngang -->
+    <div class="danh-sach-san-pham">
+
+      <div class="the-san-pham">
+        <span class="badge">Bán chạy</span>
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400'); background-color: #c8956b;"></div>
+        <div class="info">
+          <h3>Cà Phê Sữa Đá</h3>
+          <p>Đậm đà, béo ngậy, thơm ngon chuẩn vị</p>
+          <div class="card-footer">
+            <span class="gia">29.000đ</span>
+            <button class="btn-them">+ Thêm</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="the-san-pham">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400'); background-color: #b07850;"></div>
+        <div class="info">
+          <h3>Cappuccino</h3>
+          <p>Bọt sữa mịn màng, hương vị Ý chuẩn mực</p>
+          <div class="card-footer">
+            <span class="gia">45.000đ</span>
+            <button class="btn-them">+ Thêm</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="the-san-pham">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400'); background-color: #d4a87a;"></div>
+        <div class="info">
+          <h3>Trà Sữa Trân Châu</h3>
+          <p>Ngọt nhẹ, trân châu dai dẻo thơm ngon</p>
+          <div class="card-footer">
+            <span class="gia">35.000đ</span>
+            <button class="btn-them">+ Thêm</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="the-san-pham">
+        <span class="badge">Mới</span>
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400'); background-color: #6a8c5a;"></div>
+        <div class="info">
+          <h3>Matcha Latte</h3>
+          <p>Matcha Nhật Bản thuần chất, thanh mát</p>
+          <div class="card-footer">
+            <span class="gia">50.000đ</span>
+            <button class="btn-them">+ Thêm</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PHẦN 4: FOOTER ===== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>☕ Cafe Góc Nhỏ</h4>
+        <p>Nơi mỗi tách cà phê<br>kể một câu chuyện.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Thông tin</h4>
+        <p>
+          📍 123 Đường Lê Lợi, Hải Phòng<br>
+          📞 0912 345 678<br>
+          ⏰ 7:00 – 22:00 hàng ngày
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Liên kết</h4>
+        <p>
+          <a href="#">Trang chủ</a><br>
+          <a href="#">Menu</a><br>
+          <a href="#">Về chúng tôi</a>
+        </p>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="ban-quyen">© 2025 Cafe Góc Nhỏ. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
